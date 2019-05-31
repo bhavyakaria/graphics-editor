@@ -1,0 +1,10 @@
+.canvas {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 100px 0;
+}
+
+.drawing {
+    left: 0 !important;
+}
