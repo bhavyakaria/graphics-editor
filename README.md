@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Build commands
 
-1.`npm install`
+1. Run `npm install`
 2. Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/paint`. 
 
 ## Functionality
@@ -29,4 +29,8 @@ Draw a straight line between two points.
 
 ### Screenshots
 
+![Application](https://github.com/bhavyakaria/PaintApplication/blob/master/src/assets/application.png)
 
+![Brush](https://github.com/bhavyakaria/PaintApplication/blob/master/src/assets/brushss.png)
+
+![Line](https://github.com/bhavyakaria/PaintApplication/blob/master/src/assets/liness.png)
