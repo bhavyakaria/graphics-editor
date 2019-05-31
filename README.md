@@ -2,26 +2,31 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.9.
 
-## Development server
+## Build commands
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+1. npm install
+2. Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/paint`. 
 
-## Code scaffolding
+## Functionality
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+1. Brush
+2. Eraser
+3. Line
+4. Save Image
+5. Next (Not implemented yet)
 
-## Build
+### Brush
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Allows free hand drawing with customization available to change color and width of stroke.
 
-## Running unit tests
+### Eraser
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Currently, it erases all of the work.
 
-## Running end-to-end tests
+### Line
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Draw a straight line between two points.
 
-## Further help
+### Screenshots
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
