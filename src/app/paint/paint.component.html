@@ -10,18 +10,18 @@
   </div>
   
   <!-- Brush -->
-  <button id="brush" (click)="brushClick()">
+  <button id="brush" (click)="selectBrush()">
     <img src="../assets/brush.png">
   </button>
   
   <!-- Erase -->
-  <button id="erase" (click)="eraser()">
+  <button id="erase" (click)="selectEraser('DRAWING')">
     <img src="../assets/eraser.png">
   </button>
 
   <!-- Straight Line -->
   <button id="line">
-    <img src="../assets/line.png" (click)="lineSelection()">
+    <img src="../assets/line.png" (click)="selectLine()">
   </button>
   
   <!-- Save -->
@@ -32,4 +32,4 @@
   <br>
 </div>
 <canvas class="canvas" #imageCanvas id="imageCanvas" style="z-index: 0;">Your browser does not support canvas. Please upgrade it!</canvas>
-<canvas class="canvas" #canvas id="canvas" (mouseup)="mouseUp($event)" (mousedown)="mouseDown($event)" (mousemove)="mouseMove($event)" style="z-index: 1;" (click)="drawLine($event)">Your browser does not support canvas. Please upgrade it!</canvas>
+<canvas class="canvas" #drawingCanvas id="drawingCanvas" (mouseup)="mouseUp($event)" (mousedown)="mouseDown($event)" (mousemove)="mouseMove($event)" style="z-index: 1;" (click)="drawLine($event)">Your browser does not support canvas. Please upgrade it!</canvas>

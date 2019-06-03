@@ -9,43 +9,47 @@ import { async } from '@angular/core/testing';
 export class PaintComponent implements OnInit {
 
   // canvas initialization
-  @ViewChild('canvas') canvas: ElementRef;
+  @ViewChild('drawingCanvas') drawingCanvas: ElementRef;
   @ViewChild('imageCanvas') imageCanvas: ElementRef;
-  public context: CanvasRenderingContext2D;
+
+  public drawingContext: CanvasRenderingContext2D;
   public imageContext: CanvasRenderingContext2D;
-  public canvasElement;
+
+  public drawingCanvasElement;
   public imageCanvasElement;
 
-  // to track if brush is selected
-  mouse = false;
+  // to track if tool is selected
+  isMouseOn = false;
   brushSelected = false;
   lineSelected = false;
+
   // x and y coordinates for mouse pointer
   positionX: number; positionY: number;
+
+  // storing input values of color and stroke width
   brushColor: any;
   selectedColor = "#000000"
   selectedWidth = 5;
-  saveLink = document.getElementById("saveLink"); //saveLink element 
 
-  // dummy images
-  images = [
-    "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-    "https://cdn.glitch.com/4c9ebeb9-8b9a-4adc-ad0a-238d9ae00bb5%2Fmdn_logo-only_color.svg?1535749917189",
-    "https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-  ];
+  imagesUrls: any;
 
-  editedImages;
-
+  // object and counter for saving edited image 
   imageCounter = 0;
-  image = new Image();
+  editedImage = new Image();
 
-  constructor() { }
+  // for line tool
+  mouseClicks = 0;
+  lastClickCoordinates = [0, 0];
+
+  constructor() {
+    this.loadImages();
+  }
 
   ngAfterViewInit(): void {
 
     // drawing canvas
-    this.canvasElement = this.canvas.nativeElement;
-    this.context = this.canvasElement.getContext('2d');
+    this.drawingCanvasElement = this.drawingCanvas.nativeElement;
+    this.drawingContext = this.drawingCanvasElement.getContext('2d');
 
     // drawing canvas
     this.imageCanvasElement = this.imageCanvas.nativeElement;
@@ -53,141 +57,78 @@ export class PaintComponent implements OnInit {
     this.imageCanvasElement.width = window.innerWidth;
     this.imageCanvasElement.height = window.innerHeight;
 
-    // drawing canvas
-    this.canvasElement.height = window.innerHeight; 
-    this.canvasElement.width = window.innerWidth;
-
-    this.context.lineJoin = "round";
-    this.context.lineCap = "round";
+    this.drawingContext.lineJoin = "round";
+    this.drawingContext.lineCap = "round";
 
     this.showImage(0);
     
   }
 
+  /**
+   * drawing image on imageCanvas from an image url
+   * @param position - fetchcing image url from imageUrls from specified position
+   */
   showImage(position) {
-    let width, height;
-    if (!!this.images[position]) {
+    if (!!this.imagesUrls[position]) {
       this.imageCounter++;
-      this.image.crossOrigin = "anonymous";
-      this.image.onload = () => {
+      this.editedImage.crossOrigin = "anonymous";
+      this.editedImage.onload = () => {
         // image canvas
-        this.imageCanvasElement.height = this.image.height; 
-        this.imageCanvasElement.width = this.image.width;
+        this.imageCanvasElement.height = this.editedImage.height; 
+        this.imageCanvasElement.width = this.editedImage.width;
 
-        // // drawwing canvas
-        // this.canvasElement.height = this.image.height; 
-        // this.canvasElement.width = this.;
+        // drawing canvas
+        this.drawingCanvasElement.height = this.editedImage.height; 
+        this.drawingCanvasElement.width = this.editedImage.width;
 
-        this.imageContext.drawImage(this.image, 0, 0);
+        this.imageContext.drawImage(this.editedImage, 0, 0);
       }
       
-      this.image.src = this.images[position];
+      this.editedImage.src = this.imagesUrls[position];
     } else {
       this.imageContext.clearRect(0, 0, this.imageCanvasElement.width, this.imageCanvasElement.height);
     }
-    
   }
 
   ngOnInit() { }
 
-  // on selecting brush to draw
-  brushClick() {
-    this.context.strokeStyle = this.selectedColor;
-    this.context.lineWidth = this.selectedWidth;
-    console.log(this.selectedWidth);
-    console.log(this.selectedColor);
+  /**
+   * loading images to be edited from a particular source
+   */
+  loadImages() {
+    this.imagesUrls = [
+      "https://assets1.cleartax-cdn.com/s/img/2018/04/05172018/Aadhaar-card-sample-300x212.png",
+      "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://cdn.glitch.com/4c9ebeb9-8b9a-4adc-ad0a-238d9ae00bb5%2Fmdn_logo-only_color.svg?1535749917189",
+      "https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+    ];
+  }
+
+  /**
+   * ========================================
+   * TOOLS - Brush, Line and Eraser - START
+   * ========================================
+   */
+  
+  /**
+   * enabling brush tool
+   */
+  selectBrush() {
+    // fetch color and width size from inputs
+    this.drawingContext.strokeStyle = this.selectedColor;
+    this.drawingContext.lineWidth = this.selectedWidth;
+   
     if (this.brushSelected) {
       this.brushSelected = false;
     } else {
       this.brushSelected = true;
-    }
-    
+    } 
   }
 
-  // repetitive code for drawing
-  brushDraw(canvas, positionX, positionY) {
-    if(this.mouse && this.brushSelected) {
-      this.context.lineTo(positionX, positionY);
-      this.context.stroke();
-      canvas.style.cursor = "pointer";
-    }
-  }
-
-  mouseMove(e) {
-    if (this.mouse && this.brushSelected) {
-      let coordinates = this.getCoordinates(this.canvasElement, e);
-      this.positionX = coordinates.x;
-      this.positionY = coordinates.y;
-      this.brushDraw(this.canvasElement, this.positionX, this.positionY);
-    }
-  } 
-
-  mouseUp(e) {
-    this.mouse = false;
-    this.canvasElement.style.cursor = "default";
-  }
-
-  mouseDown(e) {
-    this.mouse = true;
-    if (this.mouse && this.brushSelected) {
-      let coordinates = this.getCoordinates(this.canvasElement, e);
-      this.canvasElement.style.cursor = "pointer";
-      this.positionX = coordinates.x;
-      this.positionY = coordinates.y;
-      this.context.beginPath();
-      this.context.moveTo(this.positionX, this.positionY);
-      this.context.lineTo(this.positionX, this.positionY);
-      this.context.stroke();
-    }
-  }
-
-  getCoordinates(canvas, e) {
-    var rect = canvas.getBoundingClientRect();
-    return {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    };
-  }
-
-  //7. Making the save button work 
-  saveClick() {
-    let reImg = window['ReImg'];
-
-    this.imageContext.drawImage(this.canvasElement, 0, 0, this.imageCanvasElement.width, this.imageCanvasElement.height);
-    let data = this.imageCanvasElement.toDataURL("image/png"); //encodes image information into a base 64 format
-    
-    /* Change MIME type to trick the browser to downlaod the file instead of displaying it */
-    data = data.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
-
-    reImg.fromCanvas(this.imageCanvasElement).downloadPng('image-'+this.imageCounter);
-
-
-    this.eraser();
-    this.imageContext.clearRect(0, 0, this.imageCanvasElement.width, this.imageCanvasElement.height);
-    this.showImage(this.imageCounter);
-  }
-
-  eraser() {
-    this.context.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
-  }
-
-  clicks = 0;
-  lastClick = [0, 0];
-  x;y;
-  
-  getCursorPosition(e) {
-
-    if (e.pageX != undefined && e.pageY != undefined) {
-        this.x = e.pageX;
-        this.y = e.pageY;
-    } else {
-        this.x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-        this.y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-    }
-    return [this.x, this.y];
-  }
-
-  lineSelection() {
+  /**
+   * enabling line tool
+   */
+  selectLine() {
     if (this.lineSelected) {
       this.lineSelected = false;
     } else {
@@ -195,26 +136,150 @@ export class PaintComponent implements OnInit {
     }
   }
 
-  drawLine(e) {
+  /**
+   * clearing the modification/drawings made on canvas
+   * 
+   * @param canvasName - specifying which canvas to erase
+   */
+  selectEraser(canvasName) {
+    switch(canvasName) {
+      case 'IMAGE': 
+        this.imageContext.clearRect(0, 0, this.imageCanvasElement.width, this.imageCanvasElement.height);
+        break;
 
+      case 'DRAWING': 
+        this.drawingContext.clearRect(0, 0, this.drawingCanvasElement.width, this.drawingCanvasElement.height);
+        break;
+
+      case 'BOTH': 
+        this.imageContext.clearRect(0, 0, this.imageCanvasElement.width, this.imageCanvasElement.height);
+        this.drawingContext.clearRect(0, 0, this.drawingCanvasElement.width, this.drawingCanvasElement.height);
+        break;
+      
+      default: 
+        console.warn('Error in canvas name passed to selectEraser', null);
+    }
+  }
+
+  /**
+   * ========================================
+   * TOOLS - Brush, Line and Eraser - END
+   * ========================================
+   */
+
+
+  /**
+   * method for drawing a line/shape on the provided canvas
+   * 
+   * @param canvas - canvas on which the line/shape has to be drawn
+   * @param positionX - starting position
+   * @param positionY - ending position
+   */
+  drawOnCanvas(canvas, positionX, positionY) {
+    if(this.isMouseOn && this.brushSelected) {
+      this.drawingContext.lineTo(positionX, positionY);
+      this.drawingContext.stroke();
+      canvas.style.cursor = "pointer";
+    }
+  }
+
+  /**
+   * below three methods - mouseDrag, mouseUp and mouseLeftClick detect 
+   * the mouse movement on canvas and help to draw using brush tool
+   * 
+   * @param event 
+   */
+
+  mouseDrag(event) {
+    if (this.isMouseOn && this.brushSelected) {
+      let coordinates = this.getCoordinates(this.drawingCanvasElement, event);
+      this.positionX = coordinates.x;
+      this.positionY = coordinates.y;
+      this.drawOnCanvas(this.drawingCanvasElement, this.positionX, this.positionY);
+    }
+  } 
+
+  mouseUp(event) {
+    this.isMouseOn = false;
+    this.drawingCanvasElement.style.cursor = "default";
+  }
+
+  mouseLeftClick(event) {
+    this.isMouseOn = true;
+    if (this.isMouseOn && this.brushSelected) {
+      let coordinates = this.getCoordinates(this.drawingCanvasElement, event);
+      this.drawingCanvasElement.style.cursor = "pointer";
+      this.positionX = coordinates.x;
+      this.positionY = coordinates.y;
+      this.drawingContext.beginPath();
+      this.drawingContext.moveTo(this.positionX, this.positionY);
+      this.drawingContext.lineTo(this.positionX, this.positionY);
+      this.drawingContext.stroke();
+    }
+  }
+
+  /**
+   * gets the coordinates of where mouse click took place on the canvas
+   * 
+   * @param canvas 
+   * @param event 
+   */
+  getCoordinates(canvas, event) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top
+    };
+  }
+
+  /**
+   * saving image as pngs with file name convention as image-n.png
+   * used reimg.js file
+   * 
+   * getting drawings from drawing canvas and merging it on image canvas before saving
+   */
+  saveClick() {
+    let reImg = window['ReImg'];
+
+    this.imageContext.drawImage(this.drawingCanvasElement, 0, 0, this.imageCanvasElement.width, this.imageCanvasElement.height);
+    let data = this.imageCanvasElement.toDataURL("image/png"); //encodes image information into a base 64 format
+    
+    /* Change MIME type to trick the browser to downlaod the file instead of displaying it */
+    data = data.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
+
+    reImg.fromCanvas(this.imageCanvasElement).downloadPng('image-'+this.imageCounter);
+
+    this.selectEraser('BOTH');
+    
+    this.showImage(this.imageCounter);
+  }
+
+  /**
+   * this method contains logic for drawing straight line between two mouse click
+   * 
+   * @param event
+   */
+  drawLine(event) {
+
+    let xCoordinate, yCoordinate;
     if (this.lineSelected) {
-      this.x = this.getCursorPosition(e)[0] - this.canvasElement.offsetLeft;
-      this.y = this.getCursorPosition(e)[1] - this.canvasElement.offsetTop;
 
-      if (this.clicks != 1) {
-        this.clicks++;
+      xCoordinate = this.getCoordinates(this.drawingCanvasElement, event).x;
+      yCoordinate = this.getCoordinates(this.drawingCanvasElement, event).y;
+
+      if (this.mouseClicks != 1) {
+        this.mouseClicks++;
       } else {
-          this.context.beginPath();
-          this.context.moveTo(this.lastClick[0], this.lastClick[1]);
-          this.context.lineTo(this.x, this.y);
-          this.context.lineWidth = 50;
-          this.context.strokeStyle = '#000000';
-          this.context.stroke();
+          this.drawingContext.beginPath();
+          this.drawingContext.moveTo(this.lastClickCoordinates[0], this.lastClickCoordinates[1]);
+          this.drawingContext.lineTo(xCoordinate, yCoordinate);
+          this.drawingContext.lineWidth = this.selectedWidth;
+          this.drawingContext.strokeStyle = this.selectedColor;
+          this.drawingContext.stroke();
 
-          this.clicks = 0;
+          this.mouseClicks = 0;
       }
-
-      this.lastClick = [this.x, this.y];
+      this.lastClickCoordinates = [xCoordinate, yCoordinate];
     }
     
   }
