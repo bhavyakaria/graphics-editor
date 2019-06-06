@@ -1,4 +1,4 @@
-# PainApplication
+# Paint Application
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.9.
 
@@ -34,3 +34,7 @@ Draw a straight line between two points.
 ![Brush](https://github.com/bhavyakaria/PaintApplication/blob/master/src/assets/brushss.png)
 
 ![Line](https://github.com/bhavyakaria/PaintApplication/blob/master/src/assets/liness.png)
+
+### Resources
+
+[Line Tool - StackOverflow](https://stackoverflow.com/questions/6035764/draw-a-line-with-two-mouse-clicks-on-html5-canvas)
