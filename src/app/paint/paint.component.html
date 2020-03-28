@@ -1,35 +1,38 @@
 <div id="toolbar">
   <!-- Color -->
-  <div id="colors">Color: 
+  <div id="colors">Color:
     <input type="color" [(ngModel)]="selectedColor" name="myColor" id="myColor">
   </div>
-  
+
   <!-- Size -->
   <div id="range">Size: 1
     <input type="range" id="myRange" [value]="5" [(ngModel)]="selectedWidth" min="1" max="100">100
   </div>
-  
+
   <!-- Brush -->
-  <button id="brush" (click)="selectBrush()">
-    <img src="../assets/brush.png">
+  <button class="btn btn-primary" id="brush" (click)="selectBrush()">
+    <i class="fas fa-paint-brush paint-brush"></i>
   </button>
-  
+
   <!-- Erase -->
-  <button id="erase" (click)="selectEraser('DRAWING')">
-    <img src="../assets/eraser.png">
+  <button id="erase" class="btn btn-primary" (click)="selectEraser('DRAWING')">
+    <i class="fas fa-eraser eraser"></i>
   </button>
 
   <!-- Straight Line -->
-  <button id="line">
-    <img src="../assets/line.png" (click)="selectLine()">
+  <button id="line" class="btn btn-primary">
+    <i class="fas fa-pencil-alt lines" (click)="selectLine()"></i>
   </button>
-  
+
   <!-- Save -->
-  <button id="save" (click)="saveClick()">Save</button>
+  <button class="btn btn-primary" id="save" (click)="saveClick()">Save</button>
 
   <!-- Next -->
-  <button id="next" (click)="nextClick()">Next</button>
+  <button id="next" class="btn btn-primary" (click)="nextClick()">Next</button>
   <br>
 </div>
-<canvas class="canvas" #imageCanvas id="imageCanvas" style="z-index: 0;">Your browser does not support canvas. Please upgrade it!</canvas>
-<canvas class="canvas" #drawingCanvas id="drawingCanvas" (mouseup)="mouseUp($event)" (mousedown)="mouseDown($event)" (mousemove)="mouseMove($event)" style="z-index: 1;" (click)="drawLine($event)">Your browser does not support canvas. Please upgrade it!</canvas>
+<canvas class="canvas" #imageCanvas id="imageCanvas" style="z-index: 0;">Your browser does not support canvas. Please
+  upgrade it!</canvas>
+<canvas class="canvas" #drawingCanvas id="drawingCanvas" (mouseup)="mouseUp($event)" (mousedown)="mouseDown($event)"
+  (mousemove)="mouseMove($event)" style="z-index: 1;" (click)="drawLine($event)">Your browser does not support canvas.
+  Please upgrade it!</canvas>

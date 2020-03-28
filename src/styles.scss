@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~bootstrap/dist/css/bootstrap.css';
+
 * {
 	-moz-box-sizing: border-box; /* Firefox */
 	-webkit-box-sizing: border-box; /* Chrome & safari */
@@ -78,15 +80,12 @@ canvas {
 #reset, #save, #next {
 	position: relative;
 	float: right;
-	font-size: 20px;
+	font-size: 15px;
 	font-family: Verdana;
-	font-weight: 500;
 	background-color: white;
 	color: #4f4f4f;
 	text-align: center;
 	cursor: pointer;
-	height: 30px;
-	width: 70px;
 	margin-right: 15px;
 }
 

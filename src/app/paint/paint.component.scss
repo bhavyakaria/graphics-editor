@@ -8,3 +8,8 @@
 .drawing {
     left: 0 !important;
 }
+
+.paint-brush, .eraser, .lines {
+    display: block;
+    color: black;
+}

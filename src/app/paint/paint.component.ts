@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { async } from '@angular/core/testing';
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-paint',
@@ -12,11 +12,11 @@ export class PaintComponent implements OnInit {
   @ViewChild('drawingCanvas') drawingCanvas: ElementRef;
   @ViewChild('imageCanvas') imageCanvas: ElementRef;
 
-  public drawingContext: CanvasRenderingContext2D;
-  public imageContext: CanvasRenderingContext2D;
+  drawingContext: CanvasRenderingContext2D;
+  imageContext: CanvasRenderingContext2D;
 
-  public drawingCanvasElement;
-  public imageCanvasElement;
+  drawingCanvasElement;
+  imageCanvasElement;
 
   // to track if tool is selected
   isMouseOn = false;
@@ -28,7 +28,7 @@ export class PaintComponent implements OnInit {
 
   // storing input values of color and stroke width
   brushColor: any;
-  selectedColor = "#000000"
+  selectedColor = '#000000';
   selectedWidth = 5;
 
   imagesUrls: any;
@@ -40,6 +40,8 @@ export class PaintComponent implements OnInit {
   // for line tool
   mouseClicks = 0;
   lastClickCoordinates = [0, 0];
+
+  faCoffee = faCoffee;
 
   constructor() {
     this.loadImages();
@@ -57,11 +59,11 @@ export class PaintComponent implements OnInit {
     this.imageCanvasElement.width = window.innerWidth;
     this.imageCanvasElement.height = window.innerHeight;
 
-    this.drawingContext.lineJoin = "round";
-    this.drawingContext.lineCap = "round";
+    this.drawingContext.lineJoin = 'round';
+    this.drawingContext.lineCap = 'round';
 
     this.showImage(0);
-    
+
   }
 
   /**
@@ -71,19 +73,19 @@ export class PaintComponent implements OnInit {
   showImage(position) {
     if (!!this.imagesUrls[position]) {
       this.imageCounter++;
-      this.editedImage.crossOrigin = "anonymous";
+      this.editedImage.crossOrigin = 'anonymous';
       this.editedImage.onload = () => {
         // image canvas
-        this.imageCanvasElement.height = this.editedImage.height; 
+        this.imageCanvasElement.height = this.editedImage.height;
         this.imageCanvasElement.width = this.editedImage.width;
 
         // drawing canvas
-        this.drawingCanvasElement.height = this.editedImage.height; 
+        this.drawingCanvasElement.height = this.editedImage.height;
         this.drawingCanvasElement.width = this.editedImage.width;
 
         this.imageContext.drawImage(this.editedImage, 0, 0);
       }
-      
+
       this.editedImage.src = this.imagesUrls[position];
     } else {
       this.imageContext.clearRect(0, 0, this.imageCanvasElement.width, this.imageCanvasElement.height);
@@ -97,10 +99,10 @@ export class PaintComponent implements OnInit {
    */
   loadImages() {
     this.imagesUrls = [
-      "https://assets1.cleartax-cdn.com/s/img/2018/04/05172018/Aadhaar-card-sample-300x212.png",
-      "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-      "https://cdn.glitch.com/4c9ebeb9-8b9a-4adc-ad0a-238d9ae00bb5%2Fmdn_logo-only_color.svg?1535749917189",
-      "https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+      'https://assets1.cleartax-cdn.com/s/img/2018/04/05172018/Aadhaar-card-sample-300x212.png',
+      'https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      'https://cdn.glitch.com/4c9ebeb9-8b9a-4adc-ad0a-238d9ae00bb5%2Fmdn_logo-only_color.svg?1535749917189',
+      'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
     ];
   }
 
@@ -109,7 +111,7 @@ export class PaintComponent implements OnInit {
    * TOOLS - Brush, Line and Eraser - START
    * ========================================
    */
-  
+
   /**
    * enabling brush tool
    */
@@ -117,12 +119,12 @@ export class PaintComponent implements OnInit {
     // fetch color and width size from inputs
     this.drawingContext.strokeStyle = this.selectedColor;
     this.drawingContext.lineWidth = this.selectedWidth;
-   
+
     if (this.brushSelected) {
       this.brushSelected = false;
     } else {
       this.brushSelected = true;
-    } 
+    }
   }
 
   /**
@@ -142,21 +144,21 @@ export class PaintComponent implements OnInit {
    * @param canvasName - specifying which canvas to erase
    */
   selectEraser(canvasName) {
-    switch(canvasName) {
-      case 'IMAGE': 
+    switch (canvasName) {
+      case 'IMAGE':
         this.imageContext.clearRect(0, 0, this.imageCanvasElement.width, this.imageCanvasElement.height);
         break;
 
-      case 'DRAWING': 
+      case 'DRAWING':
         this.drawingContext.clearRect(0, 0, this.drawingCanvasElement.width, this.drawingCanvasElement.height);
         break;
 
-      case 'BOTH': 
+      case 'BOTH':
         this.imageContext.clearRect(0, 0, this.imageCanvasElement.width, this.imageCanvasElement.height);
         this.drawingContext.clearRect(0, 0, this.drawingCanvasElement.width, this.drawingCanvasElement.height);
         break;
-      
-      default: 
+
+      default:
         console.warn('Error in canvas name passed to selectEraser', null);
     }
   }
@@ -176,10 +178,10 @@ export class PaintComponent implements OnInit {
    * @param positionY - ending position
    */
   drawOnCanvas(canvas, positionX, positionY) {
-    if(this.isMouseOn && this.brushSelected) {
+    if (this.isMouseOn && this.brushSelected) {
       this.drawingContext.lineTo(positionX, positionY);
       this.drawingContext.stroke();
-      canvas.style.cursor = "pointer";
+      canvas.style.cursor = 'pointer';
     }
   }
 
@@ -197,18 +199,18 @@ export class PaintComponent implements OnInit {
       this.positionY = coordinates.y;
       this.drawOnCanvas(this.drawingCanvasElement, this.positionX, this.positionY);
     }
-  } 
+  }
 
   mouseUp(event) {
     this.isMouseOn = false;
-    this.drawingCanvasElement.style.cursor = "default";
+    this.drawingCanvasElement.style.cursor = 'default';
   }
 
   mouseLeftClick(event) {
     this.isMouseOn = true;
     if (this.isMouseOn && this.brushSelected) {
       let coordinates = this.getCoordinates(this.drawingCanvasElement, event);
-      this.drawingCanvasElement.style.cursor = "pointer";
+      this.drawingCanvasElement.style.cursor = 'pointer';
       this.positionX = coordinates.x;
       this.positionY = coordinates.y;
       this.drawingContext.beginPath();
@@ -242,15 +244,15 @@ export class PaintComponent implements OnInit {
     let reImg = window['ReImg'];
 
     this.imageContext.drawImage(this.drawingCanvasElement, 0, 0, this.imageCanvasElement.width, this.imageCanvasElement.height);
-    let data = this.imageCanvasElement.toDataURL("image/png"); //encodes image information into a base 64 format
-    
+    let data = this.imageCanvasElement.toDataURL('image/png'); //encodes image information into a base 64 format
+
     /* Change MIME type to trick the browser to downlaod the file instead of displaying it */
     data = data.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
 
-    reImg.fromCanvas(this.imageCanvasElement).downloadPng('image-'+this.imageCounter);
+    reImg.fromCanvas(this.imageCanvasElement).downloadPng('image-' + this.imageCounter);
 
     this.selectEraser('BOTH');
-    
+
     this.showImage(this.imageCounter);
   }
 
@@ -270,17 +272,17 @@ export class PaintComponent implements OnInit {
       if (this.mouseClicks != 1) {
         this.mouseClicks++;
       } else {
-          this.drawingContext.beginPath();
-          this.drawingContext.moveTo(this.lastClickCoordinates[0], this.lastClickCoordinates[1]);
-          this.drawingContext.lineTo(xCoordinate, yCoordinate);
-          this.drawingContext.lineWidth = this.selectedWidth;
-          this.drawingContext.strokeStyle = this.selectedColor;
-          this.drawingContext.stroke();
+        this.drawingContext.beginPath();
+        this.drawingContext.moveTo(this.lastClickCoordinates[0], this.lastClickCoordinates[1]);
+        this.drawingContext.lineTo(xCoordinate, yCoordinate);
+        this.drawingContext.lineWidth = this.selectedWidth;
+        this.drawingContext.strokeStyle = this.selectedColor;
+        this.drawingContext.stroke();
 
-          this.mouseClicks = 0;
+        this.mouseClicks = 0;
       }
       this.lastClickCoordinates = [xCoordinate, yCoordinate];
     }
-    
+
   }
 }
