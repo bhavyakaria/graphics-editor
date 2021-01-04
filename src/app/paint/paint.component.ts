@@ -256,6 +256,10 @@ export class PaintComponent implements OnInit {
     this.showImage(this.imageCounter);
   }
 
+  nextClick() {
+    
+  }
+
   /**
    * this method contains logic for drawing straight line between two mouse click
    * 
