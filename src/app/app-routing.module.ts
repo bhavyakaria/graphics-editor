@@ -4,7 +4,7 @@ import { PaintComponent } from './paint/paint.component';
 
 const routes: Routes = [
   {
-    path: 'paint',
+    path: '',
     component: PaintComponent
   }
 ];
