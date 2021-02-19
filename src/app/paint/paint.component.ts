@@ -257,7 +257,12 @@ export class PaintComponent implements OnInit {
   }
 
   nextClick() {
-    
+
+    if (this.imageCounter >= this.imagesUrls.length) {
+      this.imageCounter = 0;
+    }
+
+    this.showImage(this.imageCounter);
   }
 
   /**

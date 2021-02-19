@@ -10,25 +10,25 @@
   </div>
 
   <!-- Brush -->
-  <button class="btn btn-primary" id="brush" (click)="selectBrush()">
+  <button class="btn btn-primary custom-btn" id="brush" (click)="selectBrush()">
     <i class="fas fa-paint-brush paint-brush"></i>
   </button>
 
   <!-- Erase -->
-  <button id="erase" class="btn btn-primary" (click)="selectEraser('DRAWING')">
+  <button id="erase" class="btn btn-primary custom-btn" (click)="selectEraser('DRAWING')">
     <i class="fas fa-eraser eraser"></i>
   </button>
 
   <!-- Straight Line -->
-  <button id="line" class="btn btn-primary">
+  <button id="line" class="btn btn-primary custom-btn">
     <i class="fas fa-pencil-alt lines" (click)="selectLine()"></i>
   </button>
 
   <!-- Save -->
-  <button class="btn btn-primary" id="save" (click)="saveClick()">Save</button>
+  <button class="btn btn-primary custom-btn" id="save" (click)="saveClick()">Save</button>
 
   <!-- Next -->
-  <button id="next" class="btn btn-primary" (click)="nextClick()">Next</button>
+  <button id="next" class="btn btn-primary custom-btn" (click)="nextClick()">Next</button>
   <br>
 </div>
 <canvas class="canvas" #imageCanvas id="imageCanvas" style="z-index: 0;">Your browser does not support canvas. Please
