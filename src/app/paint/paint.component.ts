@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-paint',
   templateUrl: './paint.component.html',
-  styleUrls: ['./paint.component.scss']
+  styleUrls: ['./paint.component.scss'],
+  imports: [FormsModule]
 })
 export class PaintComponent implements OnInit {
 
