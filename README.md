@@ -22,7 +22,7 @@ The tech stack used here is Angular as the framework and have used canvas API pr
 1. Run `npm install`
 2. Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/paint`. 
 
-### Screenshots
+## Screenshots
 
 ![Application](https://github.com/bhavyakaria/PaintApplication/blob/master/src/assets/application.png)
 
@@ -30,6 +30,6 @@ The tech stack used here is Angular as the framework and have used canvas API pr
 
 ![Line](https://github.com/bhavyakaria/PaintApplication/blob/master/src/assets/liness.png)
 
-### Resources
+## Resources
 
 [Line Tool - StackOverflow](https://stackoverflow.com/questions/6035764/draw-a-line-with-two-mouse-clicks-on-html5-canvas)
